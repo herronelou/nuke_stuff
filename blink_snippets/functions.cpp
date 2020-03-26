@@ -29,7 +29,10 @@ float remap(float val, float ori_min, float ori_max, float new_min, float new_ma
 }
 
 // Fract
-float fract (float x) {return fabs(x)-floor(fabs(x));}
+float fract (float x) {return x-floor(x);}
+float2 fract (float2 x) {return x-floor(x);}
+float3 fract (float3 x) {return x-floor(x);}
+float4 fract (float4 x) {return x-floor(x);}
 
 // Random
 random(float co) { return fract(sin(co*(91.3458f)) * 47453.5453f); }
