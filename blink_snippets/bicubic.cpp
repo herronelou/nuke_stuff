@@ -1,5 +1,6 @@
 // Partial function for bicubic sampling. Requires pixel coordinates to be defined as uv and an input Image called texture.
 // Have not found the way to pass texture as agument, Image type is not recognized.
+// Adapted from https://stackoverflow.com/questions/13501081/efficient-bicubic-filtering-code-in-glsl
 
 float2 fract (float2 x) {return x-floor(x);}
 float4 mix(float4 _X,float4 _Y,float _A){
