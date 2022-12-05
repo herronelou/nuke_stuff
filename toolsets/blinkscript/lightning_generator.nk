@@ -1,11 +1,11 @@
 set cut_paste_input [stack 0]
-version 11.3 v5
+version 13.2 v3
 Group {
  inputs 0
  name Lighning
  selected true
- xpos -5443
- ypos -3308
+ xpos 1347
+ ypos -42
  addUserKnob {20 User}
  addUserKnob {13 start l "Starting Point" t "3D position for the starting point of the lighning."}
  start {0 3 0}
@@ -37,6 +37,7 @@ Group {
  addUserKnob {6 main_noise_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
  addUserKnob {18 color l "Base Color" t "Choose the main color of the bolt."}
  color {1 2 3}
+ addUserKnob {6 color_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
  addUserKnob {7 taper l Taper t "Makes the tip of branches thinner (darker) than the root. "}
  taper 1
  addUserKnob {7 falloff l Falloff t "Make the children branches darker than parent branches. "}
@@ -48,6 +49,7 @@ Group {
  addUserKnob {26 noises_div l "<b><font color=#7DADF9>Turbulences</font><b>"}
  addUserKnob {18 main_noise l "Main Shape Noise" t "This noise should be used to define the overall shape of the lighning. It doesn't affect the root or tip of each branch.\n\nAmount of detail that can be optained with this noise is dependent on number of Points per Branch." R 0 10}
  main_noise 1
+ addUserKnob {6 main_noise_panelDropped l "panel dropped state" -STARTLINE +HIDDEN}
  addUserKnob {7 main_frequency l Frequency t "Adjust the frequency (size) of main shape noise" R 0 3}
  main_frequency 1
  addUserKnob {7 main_anim l Animation t "Animation of the main shape noise." R 0 100}
@@ -106,7 +108,6 @@ Group {
   PointLighning_amplitude 0.5
   PointLighning_gain 0.5
   rebuild_finalise ""
-  maxTileLines 100
   name BlinkScript1
   xpos -456
   ypos -343
@@ -126,21 +127,21 @@ Group {
   xpos -422
   ypos -234
  }
-set N133e0370 [stack 0]
+set N78446c00 [stack 0]
  Dot {
   name Dot4
   tile_color 0xa57aaa00
   xpos -519
   ypos -234
  }
-set Nbcf0160 [stack 0]
+set N78447000 [stack 0]
  Dot {
   name Dot10
   tile_color 0xa57aaa00
   xpos -813
   ypos -234
  }
-set Ncb50b1a0 [stack 0]
+set N78447400 [stack 0]
  Shuffle {
   red alpha
   green alpha
@@ -155,7 +156,7 @@ set Ncb50b1a0 [stack 0]
   xpos -847
   ypos -151
  }
-set Nd75622d0 [stack 0]
+set N78447c00 [stack 0]
  Expression {
   temp_name0 seed
   temp_expr0 1
@@ -163,13 +164,13 @@ set Nd75622d0 [stack 0]
   temp_expr1 y/height
   channel0 {-rgba.red -rgba.green -rgba.blue rgba.alpha}
   expr0 random(x+seed)*grad+(1-grad)
-  channel1 {-rgba.red -rgba.green -rgba.blue}
-  channel2 {-rgba.red -rgba.green -rgba.blue}
+  channel1 {-rgba.red -rgba.green -rgba.blue none}
+  channel2 {-rgba.red -rgba.green -rgba.blue none}
   name Expression2
   xpos -745
   ypos -128
  }
-push $Nd75622d0
+push $N78447c00
  ChannelMerge {
   inputs 2
   operation multiply
@@ -203,8 +204,8 @@ push $Nd75622d0
   xpos -813
   ypos 58
  }
-set Ndcdea7c0 [stack 0]
-push $Nbcf0160
+set N7846d000 [stack 0]
+push $N78447000
  Multiply {
   channels rgba
   value {{parent.secondary_frequency*5} {parent.secondary_frequency*5} {parent.secondary_frequency*5} {parent.secondary_anim}}
@@ -250,7 +251,7 @@ push $Nbcf0160
   xpos -519
   ypos -8
  }
-push $N133e0370
+push $N78446c00
  Merge2 {
   inputs 2
   operation plus
@@ -273,15 +274,15 @@ push $N133e0370
   xpos -422
   ypos 182
  }
-push $Ndcdea7c0
-push $Ncb50b1a0
+push $N7846d000
+push $N78447400
  Dot {
   name Dot3
   tile_color 0xa57aaa00
   xpos -964
   ypos -234
  }
-set N656258d0 [stack 0]
+set N784a7000 [stack 0]
  Shuffle {
   alpha white
   name Shuffle3
@@ -322,7 +323,7 @@ set N656258d0 [stack 0]
   xpos -964
   ypos -6
  }
-push $N656258d0
+push $N784a7000
  Dot {
   name Dot11
   tile_color 0xa57aaa00
