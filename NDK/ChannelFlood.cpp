@@ -5,11 +5,6 @@ static const char* const RCLASS = "ChannelFlood";
 
 static const char* const HELP = "Shuffle channels from one layer into every layer.";
 
-/* Remove channels from the input. This is really simple to implement
-   as it does nothing except change the info so the channels are not
-   there.
- */
-
 #include "DDImage/PixelIop.h"
 #include "DDImage/Row.h"
 #include "DDImage/Knobs.h"
@@ -83,13 +78,9 @@ void ChannelFlood::in_channels(int input, ChannelSet& mask) const {
 }
 
 void ChannelFlood::pixel_engine(const Row& in, int y, int l, int r, ChannelMask channels, Row& out) {
-    // get the colors from the A input:
-    // std::cout << "channels is: " << channels << std::endl;
-    //input0().get(y, x, r, Mask_RGBA, out);
     foreach(z, channels)
     {
         int i = colourIndex(z);
-        out.writable(z);
         //std::cout << "sourcing" << z << "from: " << chan_set[i]  << std::endl;
         //input0().get(y, l, r, chan_set[i], out);  // This doesn't work somehow, so do it pixel by pixel
         const float* inptr = in[chan_set[i]];
