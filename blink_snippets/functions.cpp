@@ -36,3 +36,40 @@ float4 fract (float4 x) {return x-floor(x);}
 
 // Random
 random(float co) { return fract(sin(co*(91.3458f)) * 47453.5453f); }
+
+// Make a quaternion out of 3 vectors, where these 3 axis vectors.
+// Adapted from https://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/
+inline float4 quaternion_from_axes(float3 x, float3 y, float3 z)
+{
+float tr = x.x + y.y + z.z;
+float4 q = .0f;
+
+if (tr > 0) { 
+  float S = sqrt(tr+1.0f) * 2;
+  q.w = 0.25 * S;
+  q.x = (y.z - z.y) / S;
+  q.y = (z.x - x.z) / S; 
+  q.z = (x.y - y.x) / S; 
+} else if ((x.x > y.y)&(x.x > z.z)) { 
+  float S = sqrt(1.0f + x.x - y.y - z.z) * 2; // S=4*qx 
+  q.w = (y.z - z.y) / S;
+  q.x = 0.25 * S;
+  q.y = (y.x + x.y) / S; 
+  q.z = (z.x + x.z) / S; 
+} else if (y.y > z.z) { 
+  float S = sqrt(1.0f + y.y - x.x - z.z) * 2; // S=4*qy
+  q.w = (z.x - x.z) / S;
+  q.x = (y.x + x.y) / S; 
+  q.y = 0.25 * S;
+  q.z = (z.y + y.z) / S; 
+} else { 
+  float S = sqrt(1.0f + z.z - x.x - y.y) * 2; // S=4*qz
+  q.w = (x.y - y.x) / S;
+  q.x = (z.x + x.z) / S;
+  q.y = (z.y + y.z) / S;
+  q.z = 0.25 * S;
+}
+// Where most quaternions expect the format to be WXYZ, Nuke uses the order XYZW for float 4s.
+q = float4(q.w, q.x, q.y, q.z);
+return q;
+}
