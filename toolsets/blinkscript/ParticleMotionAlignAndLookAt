@@ -1,0 +1,73 @@
+set cut_paste_input [stack 0]
+version 12.2 v8
+push $cut_paste_input
+Group {
+ name ParticleMotionAlignAndLookAt
+ selected true
+ xpos 773
+ ypos 892
+ addUserKnob {20 User l "Particle Motion Align + Look At"}
+ addUserKnob {41 display T ParticleBlinkScript1.display}
+ addUserKnob {41 selectable -STARTLINE T ParticleBlinkScript1.selectable}
+ addUserKnob {41 render_mode l render T ParticleBlinkScript1.render_mode}
+ addUserKnob {41 geo_select T ParticleBlinkScript1.geo_select}
+ addUserKnob {20 "" l Conditions}
+ addUserKnob {41 probability T ParticleBlinkScript1.probability}
+ addUserKnob {41 min_age l "min age" T ParticleBlinkScript1.min_age}
+ addUserKnob {41 max_age l "max age" T ParticleBlinkScript1.max_age}
+ addUserKnob {41 seed l "random seed" T ParticleBlinkScript1.seed}
+ addUserKnob {41 channels T ParticleBlinkScript1.channels}
+ addUserKnob {20 "" l Region}
+ addUserKnob {41 region T ParticleBlinkScript1.region}
+ addUserKnob {41 region_invert l "invert region" -STARTLINE T ParticleBlinkScript1.region_invert}
+ addUserKnob {41 axis T ParticleBlinkScript1.axis}
+ addUserKnob {41 file_menu l @FolderIcon T ParticleBlinkScript1.file_menu}
+ addUserKnob {41 snap_menu l @AxisIcon -STARTLINE T ParticleBlinkScript1.snap_menu}
+ addUserKnob {41 xform_order l "transform order" T ParticleBlinkScript1.xform_order}
+ addUserKnob {41 rot_order l "rotation order" T ParticleBlinkScript1.rot_order}
+ addUserKnob {41 translate T ParticleBlinkScript1.translate}
+ addUserKnob {41 rotate T ParticleBlinkScript1.rotate}
+ addUserKnob {41 scaling l scale T ParticleBlinkScript1.scaling}
+ addUserKnob {41 uniform_scale l "uniform scale" T ParticleBlinkScript1.uniform_scale}
+ addUserKnob {41 skew T ParticleBlinkScript1.skew}
+ addUserKnob {41 pivot T ParticleBlinkScript1.pivot}
+ addUserKnob {20 "" l "Local matrix" n 2}
+ addUserKnob {41 useMatrix l "specify matrix" T ParticleBlinkScript1.useMatrix}
+ addUserKnob {41 matrix l "" -STARTLINE T ParticleBlinkScript1.matrix}
+ addUserKnob {20 "" n -1}
+}
+ Input {
+  inputs 0
+  name Inputparticles
+  xpos 504
+  ypos 86
+ }
+ ParticleBlinkScript {
+  kernelSourceGroup 1
+  kernelSource "kernel ParticleMotionalignLookAt : ImageComputationKernel<ePixelWise>\n\{\n  // Declare the particle attributes as Images:\n  Image<eRead> p_position;\n  Image<eRead> p_velocity;\n  Image<eRead> p_conditions;\n  Image<eReadWrite> p_orientation;\n\n  // Declare our parameter storage\n  param:\n    float3 _lookat;\n\n  // Define the parameters to the outside world\n  void define() \{\n    defineParam(_lookat, \"paLookat\", float3(0.0f));\n  \}\n  \n  inline float4 quaternion_from_axes(float3 x, float3 y, float3 z)\n  // Adapted from https://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/\n  \{\n    float tr = x.x + y.y + z.z;\n    float4 q = .0f;\n    \n    if (tr > 0) \{ \n      float S = sqrt(tr+1.0f) * 2;\n      q.w = 0.25 * S;\n      q.x = (y.z - z.y) / S;\n      q.y = (z.x - x.z) / S; \n      q.z = (x.y - y.x) / S; \n    \} else if ((x.x > y.y)&(x.x > z.z)) \{ \n      float S = sqrt(1.0f + x.x - y.y - z.z) * 2; // S=4*qx \n      q.w = (y.z - z.y) / S;\n      q.x = 0.25 * S;\n      q.y = (y.x + x.y) / S; \n      q.z = (z.x + x.z) / S; \n    \} else if (y.y > z.z) \{ \n      float S = sqrt(1.0f + y.y - x.x - z.z) * 2; // S=4*qy\n      q.w = (z.x - x.z) / S;\n      q.x = (y.x + x.y) / S; \n      q.y = 0.25 * S;\n      q.z = (z.y + y.z) / S; \n    \} else \{ \n      float S = sqrt(1.0f + z.z - x.x - y.y) * 2; // S=4*qz\n      q.w = (x.y - y.x) / S;\n      q.x = (z.x + x.z) / S;\n      q.y = (z.y + y.z) / S;\n      q.z = 0.25 * S;\n    \}\n    // Where most quaternions expect the format to be WXYZ, Nuke uses the order XYZW.\n    q = float4(q.w, q.x, q.y, q.z);\n    return q;\n  \}\n\n  // Process the particle attributes\n  void process() \{\n    if ( p_conditions() ) \{\n      // We start with our inverted normalized velocity vector, which will become the main orientation for the particles (Z axis)\n      float3 v1 = normalize(p_velocity()) * -1.0f;\n      // For the secondary orientation, we use the look_at target. \n      // We won't use this directly as an axis as it's most likely not directly perpendicular to the motion.\n      float3 v2 = normalize(p_position()-_lookat);\n      // Get an axis that's perpendicular to both, which will become our Y axis\n      float3 v3 = normalize(cross(v1, v2));\n      // Finally calculate an axis that's perpendicular to both our Z and Y, which will be our X axis, it will generally point towards our Lookat.\n      float3 v4 = normalize(cross(v3, v1));\n      \n      // Use v1, v3 and v4 for axis Z, Y, X\n      float4 quaternion = quaternion_from_axes(v4, v3, v1);\n\n      p_orientation() = quaternion;\n    \}\n  \}\n\};"
+  name ParticleBlinkScript1
+  xpos 504
+  ypos 185
+  addUserKnob {20 User}
+  addUserKnob {13 paLookat l lookat}
+  paLookat {{parent.Axis1.world_matrix.3} {parent.Axis1.world_matrix.7} {parent.Axis1.world_matrix.11}}
+ }
+ Output {
+  name Output1
+  xpos 504
+  ypos 285
+ }
+ Input {
+  inputs 0
+  name Inputlook
+  label :nuke:knob:ParticleMotionAlignAndLookAt.Axis1.world_matrix.7
+  xpos 685
+  ypos 83
+  number 1
+ }
+ Axis2 {
+  name Axis1
+  xpos 695
+  ypos 171
+ }
+end_group
