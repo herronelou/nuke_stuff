@@ -1,0 +1,863 @@
+#! /apps/thefoundry/Nuke7.0v9/Nuke7.0 -nx
+version 7.0 v9
+define_window_layout_xml {<?xml version="1.0" encoding="UTF-8"?>
+<layout version="1.0">
+    <window x="1920" y="25" w="1920" h="1150" screen="1">
+        <splitter orientation="2">
+            <split size="865"/>
+            <splitter orientation="1">
+                <split size="40"/>
+                <dock id="" hideTitles="1" activePageId="Toolbar.1">
+                    <page id="Toolbar.1"/>
+                </dock>
+                <split size="471"/>
+                <dock id="" activePageId="Properties.1">
+                    <page id="Properties.1"/>
+                </dock>
+                <split size="1349"/>
+                <dock id="" activePageId="DAG.1">
+                    <page id="DAG.1"/>
+                    <page id="Script Editor.1"/>
+                </dock>
+                <split size="40"/>
+                <dock id="" hideTitles="1" activePageId="Toolbar_Align Nodes.1">
+                    <page id="Toolbar_Align Nodes.1"/>
+                </dock>
+            </splitter>
+            <split size="230"/>
+            <dock id="" activePageId="Curve Editor.1">
+                <page id="Curve Editor.1"/>
+                <page id="DopeSheet.1"/>
+            </dock>
+        </splitter>
+    </window>
+    <window x="0" y="25" w="1920" h="1175" screen="0">
+        <splitter orientation="2">
+            <split size="1150"/>
+            <dock id="" activePageId="Viewer.1">
+                <page id="Viewer.1"/>
+            </dock>
+        </splitter>
+    </window>
+</layout>
+}
+Root {
+ inputs 0
+ name /home/erwan.leroy/Desktop/ibk_tests.nk
+ lock_range true
+ format "2048 1152 0 0 2048 1152 1 SC2 2K Default"
+ proxy_type scale
+ proxy_format "1024 778 0 0 1024 778 1 1K_Super_35(full-ap)"
+ views "left #00ff00
+right #ff0000"
+}
+ColorWheel {
+ inputs 0
+ gamma 0.45
+ name ColorWheel1
+ xpos -861
+ ypos 741
+}
+set N7ffa090 [stack 0]
+Dot {
+ name Dot7
+ xpos -648
+ ypos 805
+}
+set N8001c80 [stack 0]
+Dot {
+ name Dot8
+ xpos 61
+ ypos 805
+}
+set N8005870 [stack 0]
+Constant {
+ inputs 0
+ channels rgb
+ color {0 1 0 0}
+ name Constant3
+ xpos -282
+ ypos 704
+}
+set N8009f70 [stack 0]
+Dot {
+ name Dot4
+ xpos -248
+ ypos 827
+}
+set N8010910 [stack 0]
+Dot {
+ name Dot6
+ xpos 213
+ ypos 957
+}
+set N8014540 [stack 0]
+push $N8005870
+IBKGizmoV3 {
+ inputs 2
+ name IBKGizmoV3_2
+ selected false
+ xpos 27
+ ypos 1078
+ st C-green
+}
+set N8018530 [stack 0]
+Merge2 {
+ inputs 2
+ operation minus
+ bbox B
+ name Merge11
+ xpos -117
+ ypos 1078
+}
+push $N8001c80
+IBKColourV3 {
+ name IBKColourV3_1
+ xpos -494
+ ypos 673
+ screen_type green
+}
+Read {
+ inputs 0
+ first 1002
+ last 1229
+ origfirst 1002
+ origlast 1229
+ origset true
+ version 24
+ name Read3
+ xpos 27
+ ypos 639
+}
+ColorBars {
+ inputs 0
+ name ColorBars1
+ xpos -702
+ ypos 584
+}
+Blur {
+ channels rgba
+ size 69
+ name Blur1
+ xpos -702
+ ypos 687
+}
+Read {
+ inputs 0
+ first 1002
+ last 1229
+ origfirst 1002
+ origlast 1229
+ origset true
+ version 24
+ name Read2
+ xpos -856
+ ypos 563
+}
+Clamp {
+ name Clamp3
+ xpos -856
+ ypos 681
+}
+Constant {
+ inputs 0
+ channels rgb
+ color {0.2102050781 0.7094726562 0.2912597656 0}
+ name Constant2
+ xpos -208
+ ypos 610
+}
+push $N8001c80
+push $N8001c80
+Expression {
+ temp_name0 rw
+ temp_expr0 .5
+ temp_name1 bw
+ temp_expr1 .5
+ channel0 {-rgba.red -rgba.green -rgba.blue}
+ channel1 {rgba.red rgba.green rgba.blue rgba.alpha}
+ expr1 g-(r*rw+b*bw)
+ channel2 {-rgba.red -rgba.green -rgba.blue}
+ channel3 {none none none -rgba.alpha}
+ name Expression4
+ xpos -631
+ ypos 966
+}
+push $N8010910
+Dot {
+ name Dot5
+ xpos -458
+ ypos 870
+}
+set N8245ec0 [stack 0]
+Expression {
+ temp_name0 rw
+ temp_expr0 .5
+ temp_name1 bw
+ temp_expr1 .5
+ channel0 {-rgba.red -rgba.green -rgba.blue}
+ channel1 {rgba.red rgba.green rgba.blue rgba.alpha}
+ expr1 g-(r*rw+b*bw)
+ channel2 {-rgba.red -rgba.green -rgba.blue}
+ channel3 {none none none -rgba.alpha}
+ name Expression5
+ xpos -566
+ ypos 1008
+}
+Merge2 {
+ inputs 2
+ operation divide
+ bbox B
+ name Merge7
+ xpos -596
+ ypos 1107
+}
+set N82560c0 [stack 0]
+push $N8245ec0
+Merge2 {
+ inputs 2
+ operation multiply
+ bbox B
+ name Merge8
+ xpos -492
+ ypos 1222
+}
+Clamp {
+ channels rgba
+ maximum_enable false
+ name Clamp4
+ xpos -492
+ ypos 1256
+}
+Merge2 {
+ inputs 2
+ operation minus
+ bbox B
+ name Merge9
+ xpos -693
+ ypos 1264
+}
+push $N8001c80
+Clamp {
+ channels rgba
+ name Clamp6
+ xpos -455
+ ypos 1013
+ disable true
+}
+push $N8001c80
+Expression {
+ expr0 1-(g-max(r,b))
+ expr1 1-(g-max(r,b))
+ channel2 {-rgba.red -rgba.green rgba.blue rgba.alpha}
+ expr2 1-(g-max(r,b))
+ name Expression6
+ xpos -827
+ ypos 1017
+}
+push $N8001c80
+push $N8245ec0
+Difference {
+ inputs 2
+ gain 0.51
+ name Difference2
+ xpos -429
+ ypos 1107
+}
+push $N8018530
+push $N82560c0
+Clamp {
+ channels rgba
+ name Clamp5
+ xpos -596
+ ypos 1183
+}
+Invert {
+ channels alpha
+ name Invert2
+ xpos -596
+ ypos 1325
+}
+set N82b24a0 [stack 0]
+Merge2 {
+ inputs 2
+ operation minus
+ bbox B
+ name Merge12
+ xpos -124
+ ypos 1382
+}
+push $N8014540
+push $N8005870
+Group {
+ inputs 2
+ name Group1
+ help "There are 2 basic approaches to pull a key with IBK. One is to use IBKColour and the C input and the other is to pick a colour which best represents the area you are trying to key.\n\nThe colour weights deal with the hardness of the matte. If you view the output (with screen subtraction ticked on) you will typically see areas where edges have a slight discolouration\ndue to the background not being fully removed from the original plate. This is not spill but a result of the matte being too strong. Lowering one of the weights will correct that particular edge. If it's\na red foreground image with an edge problem bring down the red weight - same idea for the other weight. This may affect other edges so the use of multiple IBKGizmo's with different weights split with KeyMixes is recommended.\n\nThe 'luminance match' feature adds a luminance factor to the keying algorithm which helps to capture transparent areas of the foreground which are brighter than the backing screen. It will also allow you to lessen some of the garbage area noise by bringing down the screen range - \npushing this control too far will also eat into some of your foreground blacks. 'Luminance level' allows you to make the overall effect stronger or weaker.\n\n'autolevels' will perform a colour correction before the image is pulled so that hard edges from a foreground subject with saturated colours are reduced. The same can be achieved with the weights but here only those saturated colours are affected whereas the use of weights will\naffect the entire image. When using this feature it's best to have this as a separate node which you can then split with other IBKGizmos as the weights will no longer work as expected. You can override some of the logic for when you actually have particular foreground colours you want to keep.\nFor example when you have a saturated red subject against bluescreen you'll get a magenta transition area. Autolevels will eliminate this but if you have a magenta foreground object then this control will make the magenta more red unless you check the magenta box to keep it.\n\n'screen subtraction' will remove the backing from the rgb via a subtraction process. Unchecking this will simply premultiply the original fg with the generated matte.\n\n'use bkg luminance' and 'use bkg chroma' allow you to affect the output rgb by the new bg. These controls are best used with the 'luminance match' sliders above. This feature can also sometimes really help with screens that exhibit some form of fringing artifact - usually a darkening or\nlightening of an edge on one of the colour channels on the screen. You can offset the effect by grading the bg input up or down with a grade node just before input. If it's just an area which needs help then just bezier that area and locally grade the\nbg input  up or down to remove the artifact."
+ tile_color 0x990000
+ xpos 201
+ ypos 1113
+ addUserKnob {20 "" l IBK}
+ addUserKnob {4 st l "screen type" t "use the C input  to define the screen colour on a per pixel basis or use 'pick' and the colour tab below" M {C-blue C-green pick}}
+ st C-green
+ addUserKnob {18 colour l "colour " t "use this colour instead of the C input when 'pick' is enabled above"}
+ colour {0 0 1}
+ addUserKnob {26 ""}
+ addUserKnob {41 red_weight l "red weight" T IBK1.red_weight}
+ addUserKnob {41 blue_green_weight l "blue/green weight" T IBK1.blue_green_weight}
+ addUserKnob {26 ""}
+ addUserKnob {41 lm_enable l "luminance match" T IBK1.lm_enable}
+ addUserKnob {41 level l "screen range" T IBK1.level}
+ addUserKnob {41 luma l "luminance level" T IBK1.luma}
+ addUserKnob {41 ll_enable l enable T IBK1.ll_enable}
+ addUserKnob {26 ""}
+ addUserKnob {41 autolevels T IBK1.autolevels}
+ addUserKnob {41 yellow T IBK1.yellow}
+ addUserKnob {41 cyan T IBK1.cyan}
+ addUserKnob {41 magenta T IBK1.magenta}
+ addUserKnob {26 ""}
+ addUserKnob {41 ss l "screen subtraction" T IBK1.ss}
+ addUserKnob {6 ublu l "use bkg luminance" t "have the brightness of the edge be affected by the brightness of the bg input" -STARTLINE}
+ addUserKnob {6 ubcr l "use bkg chroma" t "have the colour of the edge be affected by the colour of the bg input" -STARTLINE}
+}
+ Input {
+  inputs 0
+  name c
+  xpos 423
+  ypos 178
+  number 1
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0.5 1 0.5 0}
+  name Constant1
+  xpos -21
+  ypos 68
+ }
+ Dot {
+  name Dot1
+  xpos 82
+  ypos 202
+ }
+set N82ddcf0 [stack 0]
+ Input {
+  inputs 0
+  name bg
+  xpos 559
+  ypos 175
+  number 2
+ }
+push $N82ddcf0
+ Grade {
+  multiply 0
+  add {{colour.r} {colour.g} {colour.b} {curve}}
+  black_clamp false
+  name Grade1
+  xpos 158
+  ypos 178
+ }
+ Constant {
+  inputs 0
+  channels rgb
+  color {0 1 0 0}
+  name Constant3
+  xpos 338
+  ypos 70
+ }
+ Switch {
+  inputs 2
+  which {{st==2}}
+  name Switch1
+  xpos 293
+  ypos 178
+ }
+push $N82ddcf0
+push $N82ddcf0
+ IBK {
+  inputs 4
+  red_weight 0.5
+  blue_green_weight 0.5
+  luma 0
+  rgbal true
+  ubl {{ublu}}
+  ubc {{ubcr}}
+  name IBK1
+  note_font_color 0xff00
+  selected true
+  xpos 293
+  ypos 309
+ }
+ Switch {
+  inputs 2
+  which {{st==2?colour.g>colour.b:st}}
+  name Switch6
+  xpos 48
+  ypos 396
+ }
+ Output {
+  name Output1
+  xpos 48
+  ypos 466
+ }
+push $N82ddcf0
+ Viewer {
+  viewerProcess None
+  input_process false
+  name Viewer1
+  xpos -63
+  ypos 355
+ }
+ Input {
+  inputs 0
+  name fg
+  xpos 49
+  ypos -2
+ }
+ ColorWheel {
+  inputs 0
+  gamma 0.45
+  name ColorWheel1
+  xpos -148
+  ypos 57
+ }
+end_group
+push $N8009f70
+push $N8001c80
+push $N7ffa090
+IBK {
+ inputs 3
+ screen_type green
+ red_weight 0.5
+ blue_green_weight 0.5
+ rgbal true
+ name IBK1
+ note_font_color 0xff0000
+ xpos -861
+ ypos 977
+}
+push $N8010910
+push $N8005870
+push $N8005870
+IBK {
+ inputs 3
+ screen_type green
+ red_weight 0.5
+ blue_green_weight 0.5
+ level 0
+ luma 0
+ rgbal true
+ name IBK3
+ note_font_color 0xff0000
+ xpos -112
+ ypos 1203
+}
+Constant {
+ inputs 0
+ channels rgb
+ color {0 1 0 0}
+ name Constant5
+ xpos -1426
+ ypos -482
+}
+Dot {
+ name Dot10
+ xpos -1392
+ ypos -362
+}
+ColorWheel {
+ inputs 0
+ gamma 0.45
+ name ColorWheel3
+ xpos -1642
+ ypos -482
+}
+MergeExpression {
+ inputs 2
+ temp_name0 rw
+ temp_expr0 .5
+ temp_name1 bw
+ temp_expr1 .5
+ temp_name2 baseA
+ temp_expr2 (Bg-(Br*rw+Bb*bw))/(Ag-(Ar*rw+Ab*bw))
+ expr0 max(Br-max(Ar*baseA,0),0)
+ expr1 max(Bg-max(Ag*baseA,0),0)
+ expr2 max(Bb-max(Ab*baseA,0),0)
+ expr3 clamp(max(1-baseA,max(Br-max(Ar*baseA,0),0)*0.2125+max(Bg-max(Ag*baseA,0),0)*0.7154+max(Bb-max(Ab*baseA,0),0)*0.0721))
+ name IBK
+ xpos -1642
+ ypos -365
+}
+push $N82b24a0
+push $N8001c80
+Colorspace {
+ colorspace_out HSL
+ name Colorspace1
+ xpos -346
+ ypos 910
+ disable true
+}
+push $N8010910
+Colorspace {
+ colorspace_out HSL
+ name Colorspace2
+ xpos -261
+ ypos 959
+ disable true
+}
+MergeExpression {
+ inputs 2
+ temp_name0 rw
+ temp_expr0 .5
+ temp_name1 bw
+ temp_expr1 .5
+ channel0 {rgba.red -rgba.green -rgba.blue rgba.alpha}
+ expr0 abs(Ar-Br)
+ channel1 {-rgba.red rgba.green -rgba.blue -rgba.alpha}
+ expr1 abs(Ag-Bg)
+ channel2 {-rgba.red -rgba.green rgba.blue -rgba.alpha}
+ expr2 abs(Ab-Bb)
+ expr3 (abs(Ar-Br)+abs(Ag-Bg)+abs(Ab-Bb))/3
+ name MergeExpression2
+ xpos -279
+ ypos 1058
+}
+Grade {
+ channels alpha
+ multiply 0.09
+ black_clamp false
+ name Grade1
+ xpos -332
+ ypos 1165
+}
+Merge2 {
+ inputs 2
+ operation screen
+ bbox B
+ name Merge10
+ xpos -418
+ ypos 1411
+}
+Constant {
+ inputs 0
+ channels rgb
+ color {0 1 0 0}
+ name Constant1
+ xpos -1813
+ ypos -481
+}
+Dot {
+ name Dot2
+ xpos -1779
+ ypos -366
+}
+ColorWheel {
+ inputs 0
+ gamma 0.45
+ name ColorWheel5
+ xpos -2029
+ ypos -481
+}
+IBKGizmoV3 {
+ inputs 2
+ name IBKGizmoV3_1
+ selected false
+ xpos -2029
+ ypos -369
+ st C-green
+}
+set N8170240 [stack 0]
+push $N8170240
+ColorWheel {
+ inputs 0
+ gamma 0.45
+ name ColorWheel2
+ xpos -1286
+ ypos -481
+}
+Dot {
+ name Dot20
+ xpos -1252
+ ypos -362
+}
+set N68db35a0 [stack 0]
+Constant {
+ inputs 0
+ channels rgb
+ color {0 1 0 0}
+ name Constant4
+ xpos -1084
+ ypos -481
+}
+Dot {
+ name Dot18
+ xpos -1050
+ ypos -362
+}
+set N6574c620 [stack 0]
+Dot {
+ name Dot19
+ xpos -1050
+ ypos -268
+}
+push $N6574c620
+push $N68db35a0
+MergeExpression {
+ inputs 2
+ temp_name0 rw
+ temp_expr0 .5
+ temp_name1 bw
+ temp_expr1 .5
+ expr3 (Bg-(Br*rw+Bb*bw))/(Ag-(Ar*rw+Ab*bw))
+ name BaseAlpha
+ xpos -1176
+ ypos -365
+}
+MergeExpression {
+ inputs 2
+ expr0 Ar*Ba
+ expr1 Ag*Ba
+ expr2 Ab*Ba
+ name Premult_colorByBaseAlpha
+ xpos -1176
+ ypos -271
+}
+Clamp {
+ channels rgba
+ maximum_enable false
+ name Clamp_neg
+ xpos -1176
+ ypos -218
+}
+Merge2 {
+ inputs 2
+ operation minus
+ bbox B
+ Achannels rgb
+ Bchannels rgb
+ output rgb
+ name Substract_Color
+ label "RGB only"
+ xpos -1286
+ ypos -224
+}
+Clamp {
+ channels rgba
+ maximum_enable false
+ name Clamp_neg1
+ xpos -1286
+ ypos -156
+}
+Expression {
+ expr3 max(1-a,r*0.2125+g*0.7154+b*0.0721)
+ name max_DesatRGB_to_Inverted_Alpha
+ xpos -1286
+ ypos -114
+}
+Clamp {
+ channels alpha
+ name Clamp_alpha
+ xpos -1286
+ ypos -78
+}
+ColorWheel {
+ inputs 0
+ gamma 0.45
+ name ColorWheel4
+ xpos -827
+ ypos -479
+}
+Dot {
+ name Dot9
+ xpos -793
+ ypos -337
+}
+set N4e5f8440 [stack 0]
+push $N4e5f8440
+Expression {
+ temp_name0 rw
+ temp_expr0 .5
+ temp_name1 bw
+ temp_expr1 .5
+ channel0 {-rgba.red -rgba.green -rgba.blue}
+ channel1 {rgba.red rgba.green rgba.blue rgba.alpha}
+ expr1 g-(r*rw+b*bw)
+ channel2 {-rgba.red -rgba.green -rgba.blue}
+ channel3 {none none none -rgba.alpha}
+ name Expression1
+ xpos -768
+ ypos -340
+}
+Constant {
+ inputs 0
+ channels rgb
+ color {0 1 0 0}
+ name Constant6
+ xpos -605
+ ypos -479
+}
+Dot {
+ name Dot1
+ xpos -571
+ ypos -335
+}
+set N81aa600 [stack 0]
+Expression {
+ temp_name0 rw
+ temp_expr0 .5
+ temp_name1 bw
+ temp_expr1 .5
+ channel0 {-rgba.red -rgba.green -rgba.blue}
+ channel1 {rgba.red rgba.green rgba.blue rgba.alpha}
+ expr1 g-(r*rw+b*bw)
+ channel2 {-rgba.red -rgba.green -rgba.blue}
+ channel3 {none none none -rgba.alpha}
+ name Expression2
+ xpos -681
+ ypos -338
+}
+Merge2 {
+ inputs 2
+ operation divide
+ bbox B
+ name Merge1
+ xpos -734
+ ypos -246
+}
+set N81b96d0 [stack 0]
+push $N81aa600
+Merge2 {
+ inputs 2
+ operation multiply
+ bbox B
+ name Merge2
+ xpos -605
+ ypos -246
+}
+Clamp {
+ channels rgba
+ maximum_enable false
+ name Clamp2
+ xpos -605
+ ypos -50
+}
+Merge2 {
+ inputs 2
+ operation minus
+ bbox B
+ name Merge3
+ xpos -827
+ ypos -50
+}
+Clamp {
+ channels rgba
+ maximum_enable false
+ name Clamp8
+ xpos -827
+ ypos -7
+}
+set N4e0f2310 [stack 0]
+Saturation {
+ saturation 0
+ name Saturation1
+ xpos -628
+ ypos -7
+}
+Shuffle {
+ green red
+ blue red
+ alpha red
+ name Shuffle2
+ xpos -628
+ ypos 22
+}
+push $N81b96d0
+Clamp {
+ channels rgba
+ maximum_enable false
+ name Clamp1
+ xpos -734
+ ypos -123
+}
+Invert {
+ channels alpha
+ name Invert1
+ xpos -734
+ ypos 19
+}
+Shuffle {
+ red alpha
+ green alpha
+ blue alpha
+ name Shuffle1
+ xpos -734
+ ypos 63
+}
+Merge2 {
+ inputs 2
+ operation max
+ bbox B
+ name Merge5
+ xpos -628
+ ypos 63
+}
+Clamp {
+ channels rgba
+ name Clamp9
+ xpos -628
+ ypos 114
+}
+push $N4e0f2310
+Copy {
+ inputs 2
+ from0 rgba.alpha
+ to0 rgba.alpha
+ bbox B
+ name Copy1
+ xpos -827
+ ypos 108
+}
+Viewer {
+ inputs 5
+ cliptest true
+ viewerProcess rec709
+ input_process false
+ translate {0.2804999948 0.2014999986}
+ rotate -15.13633422
+ name Viewer1
+ xpos -1674
+ ypos 549
+ addUserKnob {20 User}
+ addUserKnob {6 localCaching -STARTLINE}
+}
+StickyNote {
+ inputs 0
+ name StickyNote3
+ label "Easier Setup\nsame result as previous expression\nerror:\nG = 0.0000000026\nAlpha = 0.0000000028"
+ note_font_size 25
+ xpos -1326
+ ypos -673
+}
+StickyNote {
+ inputs 0
+ name StickyNote2
+ label "One Node expression\nerror:\nG = 0.0000000026\nAlpha = 0.0000000028"
+ note_font_size 25
+ xpos -1650
+ ypos -666
+}
+StickyNote {
+ inputs 0
+ name StickyNote4
+ label "Research Setup\nerror:\nG = 0.0000000085\nAlpha = 0.0000000077"
+ note_font_size 25
+ xpos -828
+ ypos -671
+}
+StickyNote {
+ inputs 0
+ name StickyNote1
+ label "Original IBK"
+ note_font_size 25
+ xpos -1982
+ ypos -607
+}
